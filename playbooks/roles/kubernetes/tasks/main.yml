@@ -1,0 +1,16 @@
+---
+  - name: check is kubernetes installed
+    shell: command -v kubeadm>/dev/null 2>&1
+    register: is_kubernetes_exist
+    ignore_errors: yes
+
+  - name: disable swap
+    shell: "sudo dphys-swapfile swapoff && \ sudo dphys-swapfile uninstall && \ sudo update-rc.d dphys-swapfile remove"
+    when: is_kubernetes_exist.rc != 0
+
+  - shell: 'echo "cgroup_enable=cpuset cgroup_enable=memory" >> /boot/cmdline'
+    become: true
+
+  - name: install kubernetes
+    shell: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \ echo \"deb http://apt.kubernetes.io/ kubernetes-xenial main\" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \ sudo apt-get update -q && \ sudo apt-get install -qy kubeadm"
+    when: is_kubernetes_exist.rc != 0

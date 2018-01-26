@@ -4,5 +4,6 @@
   roles:
     - common
     - docker
+    - kubernetes
     #- beam
     #- consul-agent
