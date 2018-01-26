@@ -1,12 +1,17 @@
 ---
+  - name: Check is docker installed
+    shell: command -v docker>/dev/null 2>&1
+    register: is_docker_exist
+    ignore_errors: yes
+
   - name: install docker
-    apt:
-      name: docker.io
-      force: yes
+    shell: "curl -sSL get.docker.com | sh"
     become: true
+    when: is_docker_exist.rc != 0
 
   - name: add user to docker group
     user:
       name: "{{ ansible_user }}"
       groups: docker
     become: true
+    when: is_docker_exist.rc != 0

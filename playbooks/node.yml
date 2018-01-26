@@ -3,6 +3,6 @@
 
   roles:
     - common
+    - docker
     #- beam
-    #- docker
     #- consul-agent
