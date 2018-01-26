@@ -1,0 +1,12 @@
+{
+    "server": false,
+    "datacenter": "vrn1",
+    "data_dir": "/var/consul",
+    "ui_dir": "/home/{{ ansible_user }}",
+    "encrypt": "JChKhiub4X0C/or9NmCpzw==",
+    "log_level": "debug",
+    "enable_syslog": true,
+    "start_join": [
+			"{{ groups['nodes']|reject('equalto', ansible_hostname)|join('","') }}"
+		]
+}

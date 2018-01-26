@@ -1,0 +1,4 @@
+---
+  - name: restart consul daemon
+    service: name=consul.service state=restarted
+    become: true

@@ -1,0 +1,34 @@
+- name: set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+  become: true
+
+- name: install packages
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - mc
+    - htop
+    - vim
+  become: true
+
+- name: create ssh keys dir
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+
+- name: create ssh keys file
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+    state: touch
+
+- name: add ssh key
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+    line: "{{ ssh_key }}"
+
+- name: copy hosts file
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+  become: true
+

@@ -1,0 +1,80 @@
+---
+  - name: consul state
+    stat: path=/usr/bin/consul
+    register: st
+
+  - name: consul ui state
+    stat: path={{ ansible_env.HOME }}/index.html
+    register: ui_st
+
+  - group: name=consul state=present
+    become: true
+
+  - user: name=consul group=consul
+    become: true
+
+  - file: path=/etc/consul.d state=directory mode=0755
+    become: true
+
+  - name: create /var/consul
+    file:
+      path: /var/consul
+      state: directory
+      mode: 0755
+      owner: consul
+      group: consul
+    become: true
+
+  - name: download consul
+    unarchive:
+      src: https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_arm.zip
+      dest: /usr/bin
+      copy: no
+      owner: consul
+      group: consul
+      mode: 0755
+    when: not st.stat.exists
+    become: true
+
+  - name: copy bootstrap config
+    template:
+      src: roles/consul-agent/templates/bootstrap/config.json.j2
+      dest: /etc/consul.d/config.json
+    become: true
+    notify: restart consul daemon
+    when: consul_mode == "bootstrap"
+
+  - name: copy server config
+    template:
+      src: roles/consul-agent/templates/server/config.json.j2
+      dest: /etc/consul.d/config.json
+    become: true
+    notify: restart consul daemon
+    when: consul_mode == "server"
+
+  - name: copy client config
+    template:
+      src: roles/consul-agent/templates/client/config.json.j2
+      dest: /etc/consul.d/config.json
+    become: true
+    notify: restart consul daemon
+    when: consul_mode == "client"
+
+  - name: download consul ui
+    unarchive:
+      src: https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_web_ui.zip
+      dest: "{{ ansible_env.HOME }}"
+      copy: no
+    when: not ui_st.stat.exists
+
+  - name: copy systemd script
+    template:
+      src: roles/consul-agent/templates/consul.service
+      dest: /etc/systemd/system/consul.service
+      mode: 0755
+    notify: restart consul daemon
+    become: true
+
+  - name: keep consul started
+    service: name=consul.service state=started
+    become: true

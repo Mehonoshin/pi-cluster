@@ -1,0 +1,12 @@
+---
+  - name: install docker
+    apt:
+      name: docker.io
+      force: yes
+    become: true
+
+  - name: add user to docker group
+    user:
+      name: "{{ ansible_user }}"
+      groups: docker
+    become: true

@@ -1,0 +1,12 @@
+{
+	"bootstrap": false,
+	"server": true,
+	"datacenter": "vrn1",
+	"data_dir": "/var/consul",
+	"encrypt": "JChKhiub4X0C/or9NmCpzw==",
+	"log_level": "INFO",
+	"enable_syslog": true,
+	"start_join": [
+		"{{ groups['nodes']|reject('equalto', ansible_hostname)|join('","') }}"
+	]
+}
