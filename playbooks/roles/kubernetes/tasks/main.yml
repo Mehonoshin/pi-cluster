@@ -22,3 +22,4 @@
   - name: run cluster master
     command: kubeadm init --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
     when: k8s_mode == 'master'
+    become: true
