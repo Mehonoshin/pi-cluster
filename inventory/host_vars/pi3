@@ -1,2 +1,3 @@
 ---
 consul_mode: server
+k8s_mode: master

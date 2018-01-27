@@ -14,3 +14,11 @@
   - name: install kubernetes
     shell: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \ echo \"deb http://apt.kubernetes.io/ kubernetes-xenial main\" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \ sudo apt-get update -q && \ sudo apt-get install -qy kubeadm"
     when: is_kubernetes_exist.rc != 0
+
+  #- name: kubeadm | Reset if requested
+    #command: kubeadm reset
+    #when: reset
+
+  - name: run cluster master
+    command: kubeadm init --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    when: k8s_mode == 'master'

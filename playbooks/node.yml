@@ -2,8 +2,9 @@
 - hosts: nodes
 
   roles:
-    - common
-    - docker
+    #- common
+    #- docker
     - kubernetes
     #- beam
     #- consul-agent
+  tasks:
