@@ -1,3 +1,2 @@
 ---
-consul_mode: server
-k8s_mode: master
+zabbix_server: false

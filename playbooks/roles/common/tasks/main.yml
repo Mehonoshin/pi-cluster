@@ -9,6 +9,7 @@
     - mc
     - htop
     - vim
+    - acl
   become: true
 
 - name: create ssh keys dir

@@ -1,2 +1,2 @@
 ---
-consul_mode: server
+zabbix_server: false
