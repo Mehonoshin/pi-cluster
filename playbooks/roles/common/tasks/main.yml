@@ -25,10 +25,3 @@
   lineinfile:
     dest: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
     line: "{{ ssh_key }}"
-
-- name: copy hosts file
-  template:
-    src: hosts.j2
-    dest: /etc/hosts
-  become: true
-
