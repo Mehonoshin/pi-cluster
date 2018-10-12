@@ -1,10 +1,13 @@
 ---
 - hosts: nodes
   roles:
-    - common
+    #- common
     #- docker
     - zabbix-agent
-    - { role: anxs.postgresql, when: zabbix_server, become: true }
+    #- { role: anxs.postgresql, when: zabbix_server, become: true }
+    #- { role: dj-wasabi.zabbix-server, when: zabbix_server, become: true }
+    #- { role: dj-wasabi.zabbix-web, when: zabbix_server, become: true }
+    - { role: dj-wasabi.zabbix-agent, become: true }
     #- kubernetes
     #- beam
     #- consul-agent

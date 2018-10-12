@@ -1,6 +1,8 @@
 ---
+# Custom
 zabbix_server: true
 
+# Postgres
 postgresql_version: 9.6
 postgresql_encoding: "UTF-8"
 postgresql_locale: "en_US.UTF-8"
@@ -28,3 +30,17 @@ postgresql_users:
   - name: zabbix
     pass: zabbix
     encrypted: no       # denotes if the password is already encrypted.
+
+# Zabbix server
+zabbix_version: 3.0
+zabbix_server_database_long: postgresql
+zabbix_server_dbhost: localhost
+zabbix_server_dbname: zabbix
+zabbix_server_dbuser: zabbix
+zabbix_server_dbpassword: zabbix
+zabbix_server_dbport: 5432
+zabbix_database_creation: False
+
+# Zabbix web
+zabbix_server_name: pi1
+zabbix_url: zabbix.cspub.net

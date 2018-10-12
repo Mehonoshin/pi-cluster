@@ -1,2 +1,20 @@
 ---
 ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnmWhRUlhm8o2qyo9EkAwvNnQ48j5Na1ngLrH/yno8+yizoqfJ1WdsL7hyiDfKE8p9pWYi+LHNnDIzwRs94dwsGL1YfY8L+2ZYv9IJ4vUg7521wMQEDQ/Tw7QCRhqxv/F8MibFxdrES19ff1qG/6xhxzU0yLLo2MCSH6TGjHxDiYcOhmEB5Thtubv4iGzRh4m+X6ep8CDWaUE4R0emIq/G/+Q27zEtHT5LW2tgP8bKtjMD9OgVrw+zD+Qlff1WCp8EtX3bhNe11ipmsmbZHDKHHd4eFSqPPYOEVL7ugU86HA3SlU0out0fBDrqxl1f/pfqUlX8jgEm8SkqRibyfLb9Q== mexx@mexx.local'
+
+zabbix_version: 3.0
+zabbix_agent_server: pi1.cspub.net
+
+zabbix_agent_server: pi1.cspub.net
+zabbix_agent_serveractive: pi1.cspub.net
+zabbix_url: http://zabbix.cspub.net
+zabbix_api_use: true # use zabbix_api_create_hosts and/or zabbix_api_create_hostgroup from 0.8.0
+zabbix_api_user: Admin
+zabbix_api_pass: zabbix
+zabbix_create_host: present
+zabbix_host_groups:
+  - Linux Servers
+zabbix_repo: other
+zabbix_agent_packages:
+  - zabbix-agent
+zabbix_agent_logfile: /var/log/zabbix-agent/zabbix_agentd.log
+
