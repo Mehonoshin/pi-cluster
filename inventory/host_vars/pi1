@@ -40,7 +40,14 @@ zabbix_server_dbuser: zabbix
 zabbix_server_dbpassword: zabbix
 zabbix_server_dbport: 5432
 zabbix_database_creation: False
+zabbix_server_hostname: pi1.cspub.net
 
 # Zabbix web
-zabbix_server_name: pi1
+zabbix_server_name: pi1.cspub.net
 zabbix_url: zabbix.cspub.net
+
+# Zabbix agent
+zabbix_agent_listeninterface:
+zabbix_agent_server: 127.0.0.1
+zabbix_agent_serveractive: 127.0.0.1
+
