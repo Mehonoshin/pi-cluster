@@ -3,3 +3,11 @@ pi1 ansible_host=cluster.cspub.net ansible_port=8881
 pi2 ansible_host=cluster.cspub.net ansible_port=8882
 pi3 ansible_host=cluster.cspub.net ansible_port=8883
 pi4 ansible_host=cluster.cspub.net ansible_port=8884
+
+[docker_swarm_manager]
+pi1
+
+[docker_swarm_worker]
+pi2
+pi3
+pi4
