@@ -1,0 +1,13 @@
+---
+- hosts: docker_swarm_manager
+
+  vars:
+    database_url: postgres://postgres@cluster.cspub.net/reladar
+
+  tasks:
+    - name: Run data migrations
+      docker_container:
+        name: reladar_migrations
+        image: mexx/reladar-migrations
+        env:
+          DATABASE_URL: database_url
