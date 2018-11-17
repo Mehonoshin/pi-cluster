@@ -15,6 +15,7 @@
 
 - pip:
     name: docker-py
+  become: true
 
 - name: create ssh keys dir
   file:
@@ -30,3 +31,9 @@
   lineinfile:
     dest: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
     line: "{{ ssh_key }}"
+
+- name: Log into DockerHub
+  docker_login:
+    username: "{{ lookup('env','DOCKER_USERNAME') }}"
+    password: "{{ lookup('env','DOCKER_PASSWORD') }}"
+    email: "{{ lookup('env','DOCKER_EMAIL') }}"
