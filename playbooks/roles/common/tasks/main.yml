@@ -10,11 +10,14 @@
     - htop
     - vim
     - acl
-    - python-pip
   become: true
 
+- easy_install:
+    name: pip
+    state: latest
+
 - pip:
-    name: docker-py
+    name: docker
   become: true
 
 - name: create ssh keys dir
