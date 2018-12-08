@@ -3,11 +3,107 @@
 
   vars:
     database_url: postgres://postgres@cluster.cspub.net/reladar
+    redis_url: redis://pi3.cspub.net:6379/0
 
   tasks:
-    - name: Run data migrations
-      docker_container:
-        name: reladar_migrations
-        image: mexx/reladar-migrations
+    - name: "Apps | Sidekiq UI"
+      docker_swarm_service:
+        name: sidekiq-ui
+        image: mexx/sidekiq-ui:latest
+        replicas: 1
+        restart_policy: any
+        restart_policy_attempts: 5
+        restart_policy_window: 30
         env:
-          DATABASE_URL: database_url
+          - "REDIS_URL={{ redis_url }}"
+        publish:
+          - published_port: 9292
+            target_port: 9292
+            protocol: tcp
+            mode: ingress
+        update_monitor: 500000000
+
+    #- name: "Apps | Scheduler"
+      #docker_swarm_service:
+        #name: scheduler
+        #image: mexx/reladar-scheduler:rpi
+        #replicas: 1
+        #restart_policy: any
+        #restart_policy_attempts: 5
+        #restart_policy_window: 30
+        #env:
+          #- "REDIS_URL={{ redis_url }}"
+        #update_monitor: 500000000
+
+    # TODO: image does not work on ARM architecture
+    #- name: Apps Proxy
+      #docker_swarm_service:
+        #name: proxy
+        #image: mattes/rotating-proxy:latest
+        #replicas: 1
+        #restart_policy: any
+        #restart_policy_attempts: 5
+        #restart_policy_window: 30
+        #publish:
+          #- published_port: 5566
+            #target_port: 5566
+            #protocol: tcp
+            #mode: ingress
+          #- published_port: 4444
+            #target_port: 4444
+            #protocol: tcp
+            #mode: ingress
+        #env:
+          #- "tors=25"
+        #update_monitor: 500000000
+
+
+    #- name: Apps Redis
+      #docker_swarm_service:
+        #name: redis
+        #image: redis
+        #replicas: 1
+        #restart_policy: any
+        #restart_policy_attempts: 5
+        #restart_policy_window: 30
+        #publish:
+          #- published: 6379
+            #target: 6379
+
+
+    # TODO: does not work for now
+    #- name: "Apps | Migrations"
+      #docker_container:
+        #name: reladar_migrations
+        #image: mexx/reladar-migrations:rpi
+        #env:
+          #DATABASE_URL: database_url
+
+    # http://127.0.0.1:4444/haproxy?stats
+    #- name: "Apps | Scrapper"
+      #docker_swarm_service:
+        #name: scrapper
+        #image: mexx/reladar-scrapper:rpi
+        #replicas: 1
+        #restart_policy: any
+        #restart_policy_attempts: 5
+        #restart_policy_window: 30
+        #publish:
+          #- published: 9292
+            #target: 9292
+        #secrets:
+          #- secret_name: s3_access_key
+          #- secret_name: s3_secret_key 
+          #- secret_name: s3_bucket 
+          #- secret_name: s3_region 
+          #- secret_name: database_url 
+          #- secret_name: redis_url 
+        #env:
+          #- "S3_ACCESS_KEY=\"{{DOCKERSECRET:s3_access_key}}\""
+          #- "S3_SECRET_KEY=\"{{DOCKERSECRET:s3_secret_key}}\""
+          #- "S3_BUCKET=\"{{DOCKERSECRET:s3_bucket}}\""
+          #- "S3_REGION=\"{{DOCKERSECRET:s3_region}}\""
+          #- "DATABASE_URL=\"{{DOCKERSECRET:database_url}}\""
+          #- "REDIS_URL=\"{{DOCKERSECRET:redis_url}}\""
+        #args:
+          #- "chmod +x /app/expand_docker_secrets.sh && ./expand_docker_secrets.sh && foreman start"
